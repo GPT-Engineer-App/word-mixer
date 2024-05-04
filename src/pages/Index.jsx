@@ -32,7 +32,7 @@ const Index = () => {
       const randomWord = dictionary[Math.floor(Math.random() * dictionary.length)];
       setResultWord((prev) => `${prev} ${randomWord}`);
     }
-    setIsUserTurn(!isUserTurn);
+    setIsUserTurn(true);
   };
 
   return (
