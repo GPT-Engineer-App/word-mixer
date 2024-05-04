@@ -4,6 +4,7 @@ import { Container, VStack, Input, Button, Text, useToast } from "@chakra-ui/rea
 const Index = () => {
   const [inputWord, setInputWord] = useState("");
   const [resultWord, setResultWord] = useState("");
+  const [isUserTurn, setIsUserTurn] = useState(true);
   const toast = useToast();
 
   // Example dictionary
@@ -25,8 +26,13 @@ const Index = () => {
       return;
     }
 
-    const randomWord = dictionary[Math.floor(Math.random() * dictionary.length)];
-    setResultWord(`${inputWord} ${randomWord}`);
+    if (isUserTurn) {
+      setResultWord((prev) => `${prev} ${inputWord}`);
+    } else {
+      const randomWord = dictionary[Math.floor(Math.random() * dictionary.length)];
+      setResultWord((prev) => `${prev} ${randomWord}`);
+    }
+    setIsUserTurn(!isUserTurn);
   };
 
   return (
@@ -34,8 +40,8 @@ const Index = () => {
       <VStack spacing={4}>
         <Text fontSize="2xl">Word Appender</Text>
         <Input placeholder="Enter a word" value={inputWord} onChange={handleInputChange} />
-        <Button colorScheme="blue" onClick={generateRandomWord}>
-          Append Random Word
+        <Button colorScheme="blue" onClick={generateRandomWord} isDisabled={!isUserTurn}>
+          {isUserTurn ? "Append Your Word" : "Waiting for Agent..."}
         </Button>
         {resultWord && <Text fontSize="xl">Result: {resultWord}</Text>}
       </VStack>
